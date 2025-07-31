@@ -226,6 +226,6 @@ LLMInference::~LLMInference() {
     }
     free(const_cast<char*>(_chatTemplate));
     llama_sampler_free(_sampler);
-    llama_free(_ctx);
-    llama_model_free(_model);
+    if (_ctx) llama_free(_ctx); _ctx = nullptr;
+    if (_model) llama_free_model(_model); _model = nullptr;
 }

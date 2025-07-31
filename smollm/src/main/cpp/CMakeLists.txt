@@ -24,29 +24,35 @@ set(SMOLLM_SOURCES
         ${GGML_DIR}/src/ggml.c
         ${GGML_DIR}/src/gguf.cpp
 
+
         ${LLAMA_DIR}/src/llama.cpp
-        ${LLAMA_DIR}/src/llama-vocab.cpp
-        ${LLAMA_DIR}/src/llama-grammar.cpp
-        ${LLAMA_DIR}/src/llama-sampling.cpp
-        ${LLAMA_DIR}/src/llama-context.cpp
-        ${LLAMA_DIR}/src/llama-model.cpp
-        ${LLAMA_DIR}/src/llama-model-loader.cpp
-        ${LLAMA_DIR}/src/llama-impl.cpp
-        ${LLAMA_DIR}/src/llama-memory.cpp
-        ${LLAMA_DIR}/src/llama-mmap.cpp
-        ${LLAMA_DIR}/src/llama-hparams.cpp
-        ${LLAMA_DIR}/src/llama-hparams.cpp
-        ${LLAMA_DIR}/src/llama-kv-cache-recurrent.cpp
-        ${LLAMA_DIR}/src/llama-kv-cache-unified-iswa.cpp
-        ${LLAMA_DIR}/src/llama-kv-cache-unified.cpp
-        ${LLAMA_DIR}/src/llama-batch.cpp
-        ${LLAMA_DIR}/src/llama-arch.cpp
         ${LLAMA_DIR}/src/llama-adapter.cpp
+        ${LLAMA_DIR}/src/llama-arch.cpp
+        ${LLAMA_DIR}/src/llama-batch.cpp
         ${LLAMA_DIR}/src/llama-chat.cpp
+        ${LLAMA_DIR}/src/llama-context.cpp
+        ${LLAMA_DIR}/src/llama-cparams.cpp
+        ${LLAMA_DIR}/src/llama-grammar.cpp
         ${LLAMA_DIR}/src/llama-graph.cpp
-        ${LLAMA_DIR}/src/unicode.h
-        ${LLAMA_DIR}/src/unicode.cpp
+        ${LLAMA_DIR}/src/llama-hparams.cpp
+        ${LLAMA_DIR}/src/llama-impl.cpp
+        ${LLAMA_DIR}/src/llama-io.cpp
+        ${LLAMA_DIR}/src/llama-kv-cache-unified.cpp
+        ${LLAMA_DIR}/src/llama-kv-cache-unified-iswa.cpp
+        ${LLAMA_DIR}/src/llama-memory.cpp
+        ${LLAMA_DIR}/src/llama-memory-hybrid.cpp
+        ${LLAMA_DIR}/src/llama-memory-recurrent.cpp
+        ${LLAMA_DIR}/src/llama-mmap.cpp
+        ${LLAMA_DIR}/src/llama-model-loader.cpp
+        ${LLAMA_DIR}/src/llama-model-saver.cpp
+        ${LLAMA_DIR}/src/llama-model.cpp
+        ${LLAMA_DIR}/src/llama-quant.cpp
+        ${LLAMA_DIR}/src/llama-sampling.cpp
+        ${LLAMA_DIR}/src/llama-vocab.cpp
         ${LLAMA_DIR}/src/unicode-data.cpp
+        ${LLAMA_DIR}/src/unicode.cpp
+        ${LLAMA_DIR}/src/unicode.h
+
 
         ${VENDOR_DIR}/nlohmann/json_fwd.hpp
         ${VENDOR_DIR}/nlohmann/json.hpp
