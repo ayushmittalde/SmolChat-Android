@@ -91,6 +91,19 @@ class SmolLMManager(
         }
     }
 
+    suspend fun getSMSAnalysis(query: String): String? {
+        return try {
+            var response = ""
+            instance.getResponseAsFlow(query).collect { piece ->
+                response += piece
+            }
+            response
+        } catch (e: Exception) {
+            Log.e(LOGTAG, "Error generating response", e)
+            null
+        }
+    }
+
     fun getResponse(
         query: String,
         responseTransform: (String) -> String,

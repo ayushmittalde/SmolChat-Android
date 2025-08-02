@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".SmolChatApplication"
@@ -27,6 +28,22 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ChooseActivity"
+            android:theme="@style/Theme.SmolLMAndroid"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".ui.screens.sms_analysis.SmsAnalysisActivity"
+        android:theme="@style/Theme.SmolLMAndroid"
+        android:exported="true">
+        </activity>S
+
+        <activity android:name=".ui.screens.sms_analysis.SmsActivity"
+        android:theme="@style/Theme.SmolLMAndroid"
+        android:exported="true">
+        </activity>
+
+
         <activity
             android:label="💬 LLM"
             android:name=".ui.screens.chat.ChatActivity"
@@ -43,6 +60,14 @@
         <activity android:name=".ui.screens.model_download.DownloadModelActivity"/>
 
         <activity android:name=".ui.screens.manage_tasks.ManageTasksActivity"/>
+
+        <receiver android:name=".ui.screens.sms_analysis.SmsReceiver"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+        </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

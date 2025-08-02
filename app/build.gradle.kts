@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
+    alias(libs.plugins.hilt.application)
     id("com.google.devtools.ksp")
 }
 
@@ -109,6 +111,7 @@ dependencies {
     val pagingVersion = "3.3.5"
     implementation("androidx.paging:paging-runtime:$pagingVersion")
     implementation("androidx.paging:paging-compose:$pagingVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0") // Make sure this is included
 
     // Android Room: Local persistence with SQLite
     val roomVersion = "2.6.1"
@@ -127,4 +130,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)}
+

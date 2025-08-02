@@ -61,7 +61,7 @@ data class Chat(
      */
     var minP: Float = 0.05f,
     var temperature: Float = 1.0f,
-    var nThreads: Int = 4,
+    var nThreads: Int = 8,
     var useMmap: Boolean = true,
     var useMlock: Boolean = false,
     /**

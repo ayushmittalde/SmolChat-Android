@@ -166,7 +166,7 @@ class SmolLM {
      */
     data class InferenceParams(
         val minP: Float = 0.01f,
-        val temperature: Float = 1.0f,
+        val temperature: Float = 0.2f,
         val storeChats: Boolean = true,
         val contextSize: Long? = null,
         val chatTemplate: String? = null,

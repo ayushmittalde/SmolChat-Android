@@ -15,18 +15,23 @@
  */
 
 package io.shubham0204.smollmandroid
-
+import io.shubham0204.smollmandroid.di.appModules
+import dagger.hilt.android.HiltAndroidApp
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
+import io.shubham0204.smollmandroid.ui.screens.sms_analysis.SmsMessageManager
 
+@HiltAndroidApp
 class SmolChatApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidContext(this@SmolChatApplication)
-            modules(KoinAppModule().module)
+            modules(appModules)
         }
+        SmsMessageManager.addMessage("Ayush", "Hi my name is ayush")
+
     }
 }
