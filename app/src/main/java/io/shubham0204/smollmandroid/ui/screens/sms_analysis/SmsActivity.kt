@@ -19,6 +19,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
 
+import io.shubham0204.smollmandroid.ui.components.AppProgressDialog
+import io.shubham0204.smollmandroid.ui.components.hideProgressDialog
+import io.shubham0204.smollmandroid.ui.components.setProgressDialogText
+import io.shubham0204.smollmandroid.ui.components.setProgressDialogTitle
+import io.shubham0204.smollmandroid.ui.components.showProgressDialog
+import io.shubham0204.smollmandroid.ui.screens.sms_analysis.SmsListViewModel.ModelLoadingState
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,6 +55,12 @@ import org.koin.core.parameter.parametersOf
 import androidx.lifecycle.ViewModel
 import android.content.Context
 import org.koin.java.KoinJavaComponent.getKoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import androidx.compose.animation.core.*
+import androidx.compose.ui.draw.alpha
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.*
 
 private const val LOGTAG = "[SmsActivity]"
 private val LOGD: (String) -> Unit = { Log.d(LOGTAG, it) }
@@ -89,11 +102,45 @@ class SmsActivity : ComponentActivity() {
         
         setContent {
             val showSelectModelsListDialog by viewModel.showSelectModelListDialogState.collectAsStateWithLifecycle()
+            val modelLoadState by viewModel.modelLoadState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
+            val navController = rememberNavController()
+
+            val progressDialogVisibleState = remember { mutableStateOf(false) }
+            val progressDialogText = remember { mutableStateOf("") }
+            val progressDialogTitle = remember { mutableStateOf("") }
+            
+            // Observe modelLoadState and show appropriate UI
+            LaunchedEffect(modelLoadState) {
+                when (modelLoadState) {
+                    ModelLoadingState.IN_PROGRESS -> {
+                        setProgressDialogTitle("Loading Model")
+                        setProgressDialogText("Model loading to RAM...")
+                        progressDialogVisibleState.value = true
+                    }
+                    ModelLoadingState.FAILURE -> {
+                        progressDialogVisibleState.value = false
+                        Toast.makeText(context, "Model loading failed", Toast.LENGTH_SHORT).show()
+                        navController.navigate("edit-model")
+                    }
+                    ModelLoadingState.SUCCESS -> {
+                        progressDialogVisibleState.value = false
+                        Toast.makeText(context, "Model loaded to RAM successfully", Toast.LENGTH_SHORT).show()
+                        launch {
+                            delay(2000)
+                        }
+                    }
+                    else -> {
+                        progressDialogVisibleState.value = false
+                    }
+                }
+            }
+
+
             if (showSelectModelsListDialog) {
                SelectModelsList(viewModel = viewModel)
             }
 
-            val navController = rememberNavController()
             NavHost(
                 navController = navController,
                 startDestination = "sms-list-ui",
@@ -114,6 +161,25 @@ class SmsActivity : ComponentActivity() {
                     )
                 }
             }
+            @Composable
+            fun AppProgressDialog() {
+                if (progressDialogVisibleState.value) {
+                    AlertDialog(
+                        onDismissRequest = { /* Progress dialogs are non-cancellable */ },
+                        title = { Text(text = progressDialogTitle.value) },
+                        text = {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                LinearProgressIndicator()
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(text = progressDialogText.value)
+                            }
+                        },
+                        confirmButton = {},
+                        dismissButton = {},
+                    )
+                }
+            }
+            AppProgressDialog()
         }
     }
 }
@@ -324,20 +390,25 @@ fun SmsMessageCard(
 
             // Analysis status
             if (message.isSmishing == null) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
+                val infiniteTransition = rememberInfiniteTransition()
+            
+                // Fade animation
+                val alpha by infiniteTransition.animateFloat(
+                    initialValue = 0f,
+                    targetValue = 1f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(durationMillis = 2000, easing = FastOutSlowInEasing),
+                        repeatMode = RepeatMode.Reverse
                     )
-                    Text(
-                        text = "Analyzing...",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                )
+                Text(
+                    text = "New message! Tap to analyze",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Medium
+                    ),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = alpha)
+
+                )
             }
         }
     }

@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">SmolChat</string>
+    <string name="app_name">SMS Guard</string>
     <string name="chat_select_model">选择模型...</string>
     <string name="chat_loading_model">正在加载模型...</string>
     <string name="chat_model_cannot_be_loaded">无法加载所选的聊天模型</string>

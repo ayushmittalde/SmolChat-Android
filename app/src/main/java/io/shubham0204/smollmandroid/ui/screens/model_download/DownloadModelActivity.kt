@@ -17,6 +17,7 @@
 package io.shubham0204.smollmandroid.ui.screens.model_download
 
 import android.content.Intent
+import io.shubham0204.smollmandroid.ChooseActivity
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -123,16 +124,12 @@ class DownloadModelActivity : ComponentActivity() {
         openChatScreen = intent.extras?.getBoolean("openChatScreen") ?: true
     }
 
-    private fun openChatActivity() {
-        if (openChatScreen) {
-            Intent(this, ChatActivity::class.java).apply {
-                startActivity(this)
-                finish()
-            }
-        } else {
-            finish()
+    private fun openChooseActivity() {
+                Intent(this, ChooseActivity::class.java).apply {
+                    startActivity(this)
+                    finish()
+                }
         }
-    }
 
     private enum class AddNewModelStep {
         ImportModel,
@@ -320,7 +317,7 @@ class DownloadModelActivity : ComponentActivity() {
                 activityResult.data?.let {
                     it.data?.let { uri ->
                         if (checkGGUFFile(uri)) {
-                            viewModel.copyModelFile(uri, onComplete = { openChatActivity() })
+                            viewModel.copyModelFile(uri, onComplete = { openChooseActivity() })
                         } else {
                             createAlertDialog(
                                 dialogTitle = getString(R.string.dialog_invalid_file_title),
